@@ -424,6 +424,13 @@ contract UniswapSpendLimit{
         IERC20(token).safeTransfer(TimelockContract, amount);
     }
     
+    function recallAllFunds() public onlyUniGov{
+        uint uniAmount = IERC20(UNIContract).balanceOf(address(this));
+        uint usdcAmount = IERC20(USDCContract).balanceOf(address(this));
+        IERC20(UNIContract).safeTransfer(TimelockContract, uniAmount);
+        IERC20(USDCContract).safeTransfer(TimelockContract, usdcAmount);
+    }
+    
     function increaseSpendLimit(uint uniLimit, uint usdcLimit) public onlyUniGov{
         UNISpendLimit += uniLimit;
         USDCSpendLimit += usdcLimit;
