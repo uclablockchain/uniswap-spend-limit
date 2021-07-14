@@ -404,10 +404,12 @@ contract UniswapSpendLimit{
     }
     
     function setBeneficiary(address newBeneficiary) public onlyBeneficiary{
+        require(newBeneficiary != address(0), "ZERO_ADDR");
         beneficiary = newBeneficiary;
     }
     
     function withdrawTokens(address token, uint amount) public onlyBeneficiary{
+        require(token != address(0), "ZERO_ADDR");
         if (token == USDCContract){
             USDCSpendLimit -= amount;
         }
@@ -418,6 +420,7 @@ contract UniswapSpendLimit{
     }
     
     function recallFunds(address token, uint amount) public onlyUniGov{
+        require(token != address(0), "ZERO_ADDR");
         IERC20(token).safeTransfer(TimelockContract, amount);
     }
     
