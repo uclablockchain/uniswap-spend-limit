@@ -31,16 +31,14 @@ contract UniswapSpendLimit{
         beneficiary = newBeneficiary;
     }
     
-    // 0 = UNI, 1 = USDC
-    function withdrawTokens(uint token, uint amount) public onlyBeneficiary{
-        if (token == 1){
+    function withdrawTokens(address token, uint amount) public onlyBeneficiary{
+        if (token == USDCContract){
             USDCSpendLimit -= amount;
-            IERC20(USDCContract).transfer(beneficiary, amount);
         }
-        if (token == 0){
+        if (token == UNIContract){
             UNISpendLimit -= amount;
-            IERC20(UNIContract).transfer(beneficiary, amount);
         }
+        IERC20(token).transfer(beneficiary, amount);
     }
     
     function recallFunds(address token, uint amount) public onlyUniGov{
